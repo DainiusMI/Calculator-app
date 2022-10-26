@@ -1,0 +1,76 @@
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3B4664;
+  color: black;
+  font-weight: 600;
+}
+
+.main {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.main .screen-area {
+  width: auto;
+  height: 2rem;
+  padding: 1rem;
+  background-color: #252D44;
+  color: #fff;
+}
+.main .screen-area #value-display {
+  float: right;
+  font-size: 2rem;
+}
+.main .button-container {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #252D44;
+}
+.main .button-container .button-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.main .button-container .button-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.button {
+  background-color: #EAE3DB;
+  width: 3.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  line-height: 2.5rem;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #D13F30;
+}
+
+.acccent {
+  background-color: #667089;
+  color: #fff;
+}
+
+.contrast {
+  background-color: #D13F30;
+  color: #fff;
+}
+
+.longer {
+  width: 8rem;
+}/*# sourceMappingURL=main.css.map */

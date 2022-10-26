@@ -1,0 +1,92 @@
+@use "variables.scss" as var;
+@use "buttons.scss";
+
+// @use index.scss as *
+// index.scss would contain @forward with every file name needed
+
+
+body {
+    padding: 0;
+    margin: 0;
+
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var.$background-color;
+    color: var.$text-color;
+    font-weight: 600;
+}
+
+.main {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var.$spacing;
+
+    .screen-area {
+        width: auto;
+        height: 2rem;
+        padding: var.$spacing;
+
+        background-color: var.$darker-color;
+        color: var.$contrast-text-color;
+
+        #value-display {
+            float: right;
+            font-size: 2rem;
+        }
+    }
+    .button-container {
+
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: var.$spacing;
+        padding: var.$spacing;
+
+        background-color: var.$darker-color;
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var.$spacing;
+        }
+        .button-row {
+            display:flex;
+            flex-direction: row;
+            gap: var.$spacing;
+        }
+    }
+}
+
+
+
+.button {
+    background-color: map-get(var.$button-color, regular);
+    width: 3.5rem;
+    height: 2.5rem;
+    border-radius: .5rem;
+    text-align: center;
+    line-height: 2.5rem;
+
+    cursor: pointer;
+    &:hover {
+        background-color: map-get(var.$button-color, contrast);
+    }
+}   
+.acccent {
+    background-color: map-get(var.$button-color, accent);
+    color: var.$contrast-text-color;
+}
+.contrast {
+    background-color: map-get(var.$button-color, contrast);
+    color: var.$contrast-text-color;
+}
+.longer {
+    width: 8rem;
+}
