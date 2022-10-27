@@ -1,17 +1,16 @@
 
-const result=0;
-const inputArr=[];
+const inputArr = [];
 const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
 
-
+let firstValue, secondValue, result;
 
 function updateDisplay() {
     displayScreen.innerHTML=inputArr.join("");
 }
 
 
-// this function is only triggered by buttons without "function" class
+// this function is only triggered by buttons without "function" class and only enters numbers
 function pushArr(value) {
 
     if (value === ".") {
@@ -30,24 +29,34 @@ function pushArr(value) {
     }
 
     updateDisplay();
-    console.log(inputArr);
 }
-
-
-
 
 
 
 buttons.forEach(function(currentButton) {
     currentButton.addEventListener("click",function () {
 
-            let value=currentButton.innerHTML;
+            const value = currentButton.innerHTML;
+
 
             function reset() {
+
                 inputArr.length=0;
                 displayScreen.innerHTML=0;
+                result = undefined;
+
             }
 
+            // uses values in array to create a number and resets the array
+            function assignValue(name) {
+
+                name = parseFloat(inputArr.join(""));
+                inputArr.length = 0;
+                return name
+
+            }
+ 
+            // check if the pressed button is not a "function"
             if (!currentButton.classList.contains("function")) {
                 pushArr(value);
             }
@@ -59,18 +68,44 @@ buttons.forEach(function(currentButton) {
                     break;
 
                     case "DEL": 
-                    if (inputArr[0] === 0 && inputArr[1] === "." && inputArr.length == 2) {
-                        reset();
-                    }
-                    else if (inputArr.length>0) {
-                        inputArr.pop();
-                        if (inputArr.length>0) {
-                            updateDisplay();
+                        if (inputArr[0] === 0 && inputArr[1] === "." && inputArr.length == 2) {
+                            reset();
                         }
-                        else displayScreen.innerHTML=0;
-                    }
+                        else if (inputArr.length>0) {
+                            inputArr.pop();
+                            if (inputArr.length>0) {
+                                updateDisplay();
+                            }
+                            else displayScreen.innerHTML=0;
+                        }
                     break;
+
                     case "+":
+                        // check if there is anything entered
+                        if (inputArr.length > 0) {
+                            if (result === undefined) {
+                                result = assignValue();
+                            }
+                            else {
+                                result = ( result * 1000 + assignValue() * 1000 ) / 1000;
+                                displayScreen.innerHTML = result;
+                            }
+                            console.log(result);
+                        }
+                    break;
+
+                    case "-":
+                        if (inputArr.length > 0) {
+                            if (result === undefined) {
+                                result = assignValue();
+                            }
+                            else {
+                                result = ( result * 1000 - assignValue() * 1000 ) / 1000;
+                                displayScreen.innerHTML = result;
+                            }
+                            console.log(result);
+                        }
+                    break;
                     
                 }
             }
