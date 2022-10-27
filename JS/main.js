@@ -17,7 +17,8 @@ const result=0;
 const inputArr=[];
 const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
-console.log(buttons);
+
+
 
 function updateDisplay() {
     displayScreen.innerHTML=inputArr.join("");
@@ -65,7 +66,8 @@ buttons.forEach(
                     }
                     break;
 
-
+                    case "+":
+                    
                 }
             }
             console.log(value)
