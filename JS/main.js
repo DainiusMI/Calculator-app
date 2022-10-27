@@ -1,18 +1,4 @@
-/*
-const bntZero=document.getElementById("zero");
-const bntOne=document.getElementById("one");
-const bntTwo=document.getElementById("two");
-const bntThree=document.getElementById("three");
-const bntFour=document.getElementById("four");
-const bntFive=document.getElementById("five");
-const bnSix=document.getElementById("six");
-const bntSeven=document.getElementById("seven");
-const bntEight=document.getElementById("eight");
-const bntNine=document.getElementById("nine");
 
-
-const bnt=document.getElementById("");
-*/
 const result=0;
 const inputArr=[];
 const buttons=document.querySelectorAll(".button");
@@ -23,8 +9,28 @@ const displayScreen=document.getElementById("value-display");
 function updateDisplay() {
     displayScreen.innerHTML=inputArr.join("");
 }
-function checkForPoint() {
-    return inputArr.includes(".") || inputArr.length===0;
+
+
+// this function is only triggered by buttons without "function" class
+function pushArr(value) {
+
+    if (value === ".") {
+        // check if symbol already exists
+        if (inputArr.find(el => el == ".") != ".") {
+            // add zero if array was empty
+            if (inputArr.length == 0) {
+                inputArr.push(parseInt(0));
+            }
+            inputArr.push(".");
+        }
+    }
+
+    else {
+        inputArr.push(parseInt(value));
+    }
+
+    updateDisplay();
+    console.log(inputArr);
 }
 
 
@@ -32,32 +38,31 @@ function checkForPoint() {
 
 
 
-buttons.forEach(
-    function(currentButton) {
-        currentButton.addEventListener("click",
-        function () {
+buttons.forEach(function(currentButton) {
+    currentButton.addEventListener("click",function () {
+
             let value=currentButton.innerHTML;
-            if (parseInt(value)) {
-                inputArr.push(parseInt(value));
-                console.log(inputArr);
-                updateDisplay();
+
+            function reset() {
+                inputArr.length=0;
+                displayScreen.innerHTML=0;
             }
+
+            if (!currentButton.classList.contains("function")) {
+                pushArr(value);
+            }
+
             else {
                 switch (value) {
-                    case "." : 
-                    if (!checkForPoint()) {
-                        inputArr.push(value);
-                        updateDisplay();
-                    } 
-                    break;
-
                     case "RESET" : 
-                    inputArr.length=0;
-                    displayScreen.innerHTML=0;
+                        reset();
                     break;
 
                     case "DEL": 
-                    if (inputArr.length>0) {
+                    if (inputArr[0] === 0 && inputArr[1] === "." && inputArr.length == 2) {
+                        reset();
+                    }
+                    else if (inputArr.length>0) {
                         inputArr.pop();
                         if (inputArr.length>0) {
                             updateDisplay();
@@ -65,7 +70,6 @@ buttons.forEach(
                         else displayScreen.innerHTML=0;
                     }
                     break;
-
                     case "+":
                     
                 }
