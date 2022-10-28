@@ -109,3 +109,19 @@ function evil(fn) {
 
   let apa = "12/5*9+9.4*2";
   console.log(eval(apa));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,26 +1,29 @@
 
+  
 const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
 
 let currentOperand = "", previousOperand = "", result = 0;
 
 
+function reAsign() {
+    previousOperand = JSON.parse(String(result));
+    currentOperand = "";
+    result = 0;
+}
 
-
+function displayUpdate() {
+    if (previousOperand !== "" && currentOperand.length === 0) {
+        displayScreen.innerText = previousOperand;
+    }
+    else
+        displayScreen.innerText = currentOperand;   
+}
 
 buttons.forEach(function(currentButton) {
     currentButton.addEventListener("click", function() {
 
         const buttonValue = currentButton.innerText;
-
-
-        function reAsign() {
-            previousOperand = JSON.parse(String(result));
-            currentOperand = "";
-            result = 0;
-        }
-        
-
 
         // a none function button has been clicked
         if (!currentButton.classList.contains("function")) {
@@ -36,8 +39,6 @@ buttons.forEach(function(currentButton) {
                     }
                     currentOperand += ".";
                 }
-
-
             }
             else {
                 currentOperand += buttonValue;
@@ -46,30 +47,49 @@ buttons.forEach(function(currentButton) {
 
         }
 
+        // a function button was clicked
         else {
             switch (buttonValue) {
                 case "-" : 
-                // check if at current state "-" mean minus or negative sign
-                if (buttonValue === "-" && !currentOperand.includes("-") && currentOperand.length === 0) {
+                // does "-" mean a negative sign ATM
+                if (buttonValue === "-" && !currentOperand.includes("-") && currentOperand.length === 0) { ///<<< does not seem to need buttonValue
                     currentOperand += "-";
+                    
                 }
                 else {
+                   
                      // trasnfering value and reseting curentOperand
-                    if (!previousOperand && (!currentOperand.length === 1 || !currentOperand.includes("-"))) {
+                    if (!previousOperand && (currentOperand.length >= 1 || !currentOperand.includes("-"))) {
                         previousOperand = JSON.parse(currentOperand);
                         currentOperand = "";
                     }
+                    
+                    // subtracting  values
                     else {
-                        console.log("calculate here")
                         if (currentOperand &&  previousOperand) {
+                            
                             result = ( (parseFloat(previousOperand) *1000) - (parseFloat(currentOperand) *1000) ) /1000;
                             reAsign();
                         }
-
                     }
-
-
                 }
+                break;
+
+                case "+" :
+                     // trasnfering value and reseting curentOperand
+                    if (!previousOperand && currentOperand.length >= 1)  {
+                        previousOperand = JSON.parse(currentOperand);
+                        currentOperand = "";
+                    }
+                                                    
+                    // subtracting  values
+                    else {
+                        if (currentOperand &&  previousOperand) {
+                                                            
+                        result = ( (parseFloat(previousOperand) *1000) + (parseFloat(currentOperand) *1000) ) /1000;
+                        reAsign();
+                        }
+                    }
                 break;
             }
 
@@ -79,16 +99,3 @@ buttons.forEach(function(currentButton) {
 
     })
 })
-
-
-
-
-function displayUpdate() {
-    if (previousOperand !== "" && currentOperand.length === 0) {
-        displayScreen.innerText = previousOperand;
-    }
-    else
-        displayScreen.innerText = currentOperand;   
-}
-
-
