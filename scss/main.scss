@@ -21,8 +21,7 @@ body {
 }
 
 .main {
-    width: auto;
-    height: auto;
+    min-width: 18rem;
     display: flex;
     flex-direction: column;
     gap: var.$spacing;
@@ -42,7 +41,6 @@ body {
     }
     .button-container {
 
-        height: auto;
         display: flex;
         flex-direction: column;
         gap: var.$spacing;
@@ -67,11 +65,11 @@ body {
 
 .button {
     background-color: map-get(var.$button-color, regular);
-    width: 3.5rem;
-    height: 2.5rem;
+    width: auto;
     border-radius: .5rem;
     text-align: center;
     line-height: 2.5rem;
+    
 
     cursor: pointer;
     &:hover {
@@ -87,5 +85,5 @@ body {
     color: var.$contrast-text-color;
 }
 .longer {
-    width: 8rem;
+    grid-column: span 2;
 }

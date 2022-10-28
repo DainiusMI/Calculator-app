@@ -1,115 +1,44 @@
 
-const inputArr = [];
+// generate a string in display
+// -10.5+-9.5
+
+// input must not allow other sighns then minus at the begining of the string
+
+
+// use REGEX to split it into two numbers and function operator
+// move those numbers into array
+
+
+
+
+
+
+
 const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
 
-let firstValue, secondValue, result;
+let screenResult = 0;
+let currentOperand = "", previousOperand = "";
+//booleans to control logic
 
-function updateDisplay() {
-    displayScreen.innerHTML=inputArr.join("");
-}
-
-
-// this function is only triggered by buttons without "function" class and only enters numbers
-function pushArr(value) {
-
-    if (value === ".") {
-        // check if symbol already exists
-        if (inputArr.find(el => el == ".") != ".") {
-            // add zero if array was empty
-            if (inputArr.length == 0) {
-                inputArr.push(parseInt(0));
-            }
-            inputArr.push(".");
-        }
-    }
-
-    else {
-        inputArr.push(parseInt(value));
-    }
-
-    updateDisplay();
-}
+const decimalPoint = false;
+const minusSign = false;
+// used only if after equals user enters number not function
+const clearScreen = false;
 
 
 
 buttons.forEach(function(currentButton) {
-    currentButton.addEventListener("click",function () {
+    currentButton.addEventListener("click", function() {
 
-            const value = currentButton.innerHTML;
+        const buttonValue = currentButton.innerText;
 
 
-            function reset() {
+        if (!currentButton.classList.contains("function")) {
 
-                inputArr.length=0;
-                displayScreen.innerHTML=0;
-                result = undefined;
+        }
 
-            }
+    })
+})
 
-            // uses values in array to create a number and resets the array
-            function assignValue(name) {
 
-                name = parseFloat(inputArr.join(""));
-                inputArr.length = 0;
-                return name
-
-            }
- 
-            // check if the pressed button is not a "function"
-            if (!currentButton.classList.contains("function")) {
-                pushArr(value);
-            }
-
-            else {
-                switch (value) {
-                    case "RESET" : 
-                        reset();
-                    break;
-
-                    case "DEL": 
-                        if (inputArr[0] === 0 && inputArr[1] === "." && inputArr.length == 2) {
-                            reset();
-                        }
-                        else if (inputArr.length>0) {
-                            inputArr.pop();
-                            if (inputArr.length>0) {
-                                updateDisplay();
-                            }
-                            else displayScreen.innerHTML=0;
-                        }
-                    break;
-
-                    case "+":
-                        // check if there is anything entered
-                        if (inputArr.length > 0) {
-                            if (result === undefined) {
-                                result = assignValue();
-                            }
-                            else {
-                                result = ( result * 1000 + assignValue() * 1000 ) / 1000;
-                                displayScreen.innerHTML = result;
-                            }
-                            console.log(result);
-                        }
-                    break;
-
-                    case "-":
-                        if (inputArr.length > 0) {
-                            if (result === undefined) {
-                                result = assignValue();
-                            }
-                            else {
-                                result = ( result * 1000 - assignValue() * 1000 ) / 1000;
-                                displayScreen.innerHTML = result;
-                            }
-                            console.log(result);
-                        }
-                    break;
-                    
-                }
-            }
-            console.log(value)
-        } )
-    }
-);
