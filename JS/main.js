@@ -1,20 +1,10 @@
 
-
-
-
-
-
 const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
 
-let screenResult = 0;
-let currentOperand = "", previousOperand = "", result = "";
-//booleans to control logic
+let currentOperand = "", previousOperand = "", result = 0;
 
-let decimalPoint = false;
-let minusSign = false;
-// used only if after equals user enters number not function
-const clearScreen = false;
+
 
 
 
@@ -22,6 +12,13 @@ buttons.forEach(function(currentButton) {
     currentButton.addEventListener("click", function() {
 
         const buttonValue = currentButton.innerText;
+
+
+        function reAsign() {
+            previousOperand = JSON.parse(String(result));
+            currentOperand = "";
+            result = 0;
+        }
         
 
 
@@ -52,22 +49,23 @@ buttons.forEach(function(currentButton) {
         else {
             switch (buttonValue) {
                 case "-" : 
-
-                if (buttonValue === "-" && !minusSign) {
-
-                    // check if at current state "-" mean minus or negative sign
-                    if (currentOperand.length === 0) {
-                        minusSign = true;
-                        currentOperand += "-";
-                    }
+                // check if at current state "-" mean minus or negative sign
+                if (buttonValue === "-" && !currentOperand.includes("-") && currentOperand.length === 0) {
+                    currentOperand += "-";
                 }
                 else {
-
-                    if (!previousOperand) {
-                        // trasnfering value and reseting curentOperand
+                     // trasnfering value and reseting curentOperand
+                    if (!previousOperand && (!currentOperand.length === 1 || !currentOperand.includes("-"))) {
                         previousOperand = JSON.parse(currentOperand);
                         currentOperand = "";
-                        minusSign = false;
+                    }
+                    else {
+                        console.log("calculate here")
+                        if (currentOperand &&  previousOperand) {
+                            result = ( (parseFloat(previousOperand) *1000) - (parseFloat(currentOperand) *1000) ) /1000;
+                            reAsign();
+                        }
+
                     }
 
 
@@ -82,10 +80,15 @@ buttons.forEach(function(currentButton) {
     })
 })
 
+
+
+
 function displayUpdate() {
-    if (previousOperand && currentOperand.length === 0) {
+    if (previousOperand !== "" && currentOperand.length === 0) {
         displayScreen.innerText = previousOperand;
     }
     else
         displayScreen.innerText = currentOperand;   
 }
+
+
