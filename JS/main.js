@@ -3,20 +3,21 @@
 const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
 
-let currentOperand = "", previousOperand = "", operator = "". result = 0;
-
+let currentOperand = "", previousOperand = "", operator = "", result;
 
 
 function compute() {
 
     function asign() {
-        previousOperand = JSON.parse(currentOperand);
-        currentOperand = "";
-    }
-    function reAsign() {
-        previousOperand = JSON.parse(String(result));
-        currentOperand = "";
-        result = 0;
+        if (result || result === 0) {
+            previousOperand = JSON.parse(String(result));
+            currentOperand = "";
+            result = undefined;
+        }
+        else {
+            previousOperand = JSON.parse(currentOperand);
+            currentOperand = "";
+        }
     }
 
     if (!previousOperand && currentOperand.length > 0) {
@@ -30,23 +31,25 @@ function compute() {
     else {
         switch(operator) {
             case "minus" :
-                result = ( (parseFloat(previousOperand) *1000) - (parseFloat(currentOperand) *1000) ) /1000; ///<<< back solution ignores the sign used between two values only looks into the sign that trigger it
-                reAsign();
+                result = ( (parseFloat(previousOperand) *1000) - (parseFloat(currentOperand) *1000) ) /1000;
+                console.log(result)
+                asign();
             break;
 
             case "plus" :
-                result = ( (parseFloat(previousOperand) *1000) + (parseFloat(currentOperand) *1000) ) /1000; ///<<< back solution ignores the sign used between two values only looks into the sign that trigger it
-                reAsign();
+                result = ( (parseFloat(previousOperand) *1000) + (parseFloat(currentOperand) *1000) ) /1000;
+                asign();
+            break;
             break;
             
             case "multiply" :
                 result = parseFloat(previousOperand) * parseFloat(currentOperand);
-                reAsign()
+                asign();
             break;
 
             case "divided" :
                 result = parseFloat(previousOperand) / parseFloat(currentOperand);
-                reAsign()
+                asign();
             break;
         }
     }
@@ -55,8 +58,10 @@ function compute() {
 
 
 function displayUpdate() {
-
-    if (previousOperand !== "" && currentOperand.length === 0) {
+    if (!previousOperand && !currentOperand) {
+        displayScreen.innerText = 0;
+    }
+    else if (previousOperand !== "" && currentOperand.length === 0) {
         displayScreen.innerText = previousOperand;
     }
     else
@@ -70,8 +75,20 @@ buttons.forEach(function(currentButton) {
 
         const buttonValue = currentButton.innerText;
 
+        function checkOperator(arg) {
+            if (currentOperand.length > 0) {
+                operator=arg;
+                console.log(operator)
+                compute();
+            }
+        }
+
         // a none function button has been clicked
         if (!currentButton.classList.contains("function")) {
+
+            if (previousOperand.length >0) {
+                operator = "";
+            }
             // was it the dot sign
             if (buttonValue === ".") {
                 // is it allowed
@@ -90,8 +107,10 @@ buttons.forEach(function(currentButton) {
         else {
             switch (buttonValue) {
                 case "+" :
-                    compute();
-                    operator="plus";
+                    checkOperator("plus");
+                   
+                
+              
                 break;
 
                 case "-" : 
@@ -100,24 +119,23 @@ buttons.forEach(function(currentButton) {
                         currentOperand += "-";
                     }
                     else {
-                        compute();
-                        operator = "minus";
+                        checkOperator("minus");
+                        console.log(previousOperand)
                     }
                 break;
 
                 case "x" :
-                    compute();
-                    operator="multiply";
+                    checkOperator("multiply");
+             
                 break;
                 
                 case "/" :
-                    compute();
-                    operator="divided";
+                    checkOperator("divided");
                 break;
         
                 case "=" :
                     compute();
-                    resetScreen = true;
+                    
                 break;
 
                 case "RESET" :
@@ -136,6 +154,7 @@ buttons.forEach(function(currentButton) {
             }
 
         }
+       
         displayUpdate();
     })
 })
