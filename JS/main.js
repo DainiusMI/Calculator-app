@@ -4,6 +4,7 @@ const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
 
 let currentOperand = "", previousOperand = "", operator = "", result;
+let resetScreen = false, equals = false;
 
 
 function compute() {
@@ -14,7 +15,7 @@ function compute() {
             currentOperand = "";
             result = undefined;
         }
-        else {
+        else if (!previousOperand) {
             previousOperand = JSON.parse(currentOperand);
             currentOperand = "";
         }
@@ -58,7 +59,7 @@ function compute() {
 
 
 function displayUpdate() {
-    if (!previousOperand && !currentOperand) {
+    if (!previousOperand && !currentOperand || resetScreen) {
         displayScreen.innerText = 0;
     }
     else if (previousOperand !== "" && currentOperand.length === 0) {
@@ -78,13 +79,15 @@ buttons.forEach(function(currentButton) {
         function checkOperator(arg) {
             if (currentOperand.length > 0) {
                 operator=arg;
-                console.log(operator)
                 compute();
             }
         }
-
         // a none function button has been clicked
         if (!currentButton.classList.contains("function")) {
+            resetScreen = false;
+            
+
+
 
             if (previousOperand.length >0) {
                 operator = "";
@@ -135,20 +138,20 @@ buttons.forEach(function(currentButton) {
         
                 case "=" :
                     compute();
-                    
+
                 break;
 
                 case "RESET" :
                     currentOperand = "", previousOperand = "", operator = "", result = 0;
-                    displayScreen.innerText = 0;
-                return
+                    resetScreen = true;
+                break;
 
                 case "DEL" :
-
                     if (currentOperand.length > 0) {
-                        currentOperand = currentOperand.slice(0. -1);
-                        console.log(currentOperand)
-                        
+                        currentOperand = currentOperand.slice(0, currentOperand.length -1); 
+                        if (currentOperand.length ===0) {
+                            resetScreen = true;
+                        }
                     }
                 break;
             }
