@@ -3,23 +3,28 @@
 const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
 
-let currentOperand = "", previousOperand = "", operator = "", result;
-let resetScreen = false, equals = false;
+let currentOperand = "", previousOperand = "", operator = "", result, previousResult;
+let reset = false. fromScreen = false;
+
+
+function asign() {
+    if (result || result === 0) {
+        previousOperand = JSON.parse(String(result));
+        currentOperand = "";
+        previousResult = JSON.parse(result);
+        result = undefined;
+    }
+    else if (!previousOperand) {
+        previousOperand = JSON.parse(currentOperand);
+        currentOperand = "";
+        console.log("prevOper: " + previousOperand)
+    }
+}
 
 
 function compute() {
 
-    function asign() {
-        if (result || result === 0) {
-            previousOperand = JSON.parse(String(result));
-            currentOperand = "";
-            result = undefined;
-        }
-        else if (!previousOperand) {
-            previousOperand = JSON.parse(currentOperand);
-            currentOperand = "";
-        }
-    }
+
 
     if (!previousOperand && currentOperand.length > 0) {
         if (currentOperand.length === 1 && !currentOperand.includes("-")) {
@@ -59,7 +64,7 @@ function compute() {
 
 
 function displayUpdate() {
-    if (!previousOperand && !currentOperand || resetScreen) {
+    if (!previousOperand && !currentOperand || reset) {
         displayScreen.innerText = 0;
     }
     else if (previousOperand !== "" && currentOperand.length === 0) {
@@ -77,17 +82,18 @@ buttons.forEach(function(currentButton) {
         const buttonValue = currentButton.innerText;
 
         function checkOperator(arg) {
-            if (currentOperand.length > 0) {
+            if (currentOperand.length > 0 || previousOperand) {
                 operator=arg;
+                console.log(operator)
                 compute();
             }
         }
         // a none function button has been clicked
         if (!currentButton.classList.contains("function")) {
-            resetScreen = false;
             
-
-
+            if (reset) {
+                reset = false;
+            }
 
             if (previousOperand.length >0) {
                 operator = "";
@@ -108,22 +114,30 @@ buttons.forEach(function(currentButton) {
             }
         }
         else {
+
+            // asign value from creen if function was selected without entering a value
+            if (!currentOperand && displayScreen.innerText != 0)  {
+                currentOperand = parseFloat(displayScreen.innerText);
+                asign();
+                fromScreen = true;
+            }
+
             switch (buttonValue) {
                 case "+" :
+                    console.log("+")
                     checkOperator("plus");
-                   
-                
-              
                 break;
 
                 case "-" : 
+
                     // does "-" mean a negative sign ATM
+                    console.log("operator: " + operator)
                     if (!currentOperand.includes("-") && currentOperand.length === 0) {
                         currentOperand += "-";
                     }
                     else {
                         checkOperator("minus");
-                        console.log(previousOperand)
+                        //console.log(previousOperand)
                     }
                 break;
 
@@ -139,25 +153,34 @@ buttons.forEach(function(currentButton) {
                 case "=" :
                     compute();
 
-                break;
+                    function equals() {
+                        displayUpdate();
+
+                        currentOperand = "", previousOperand = "", operator = "";
+                        reset = false;
+                        
+                    }
+                    console.log(result)
+                    equals();
+                return
 
                 case "RESET" :
                     currentOperand = "", previousOperand = "", operator = "", result = 0;
-                    resetScreen = true;
+                    reset = true;
                 break;
 
                 case "DEL" :
                     if (currentOperand.length > 0) {
                         currentOperand = currentOperand.slice(0, currentOperand.length -1); 
                         if (currentOperand.length ===0) {
-                            resetScreen = true;
+                            reset = true;
                         }
                     }
                 break;
             }
 
         }
-       
+
         displayUpdate();
     })
 })
