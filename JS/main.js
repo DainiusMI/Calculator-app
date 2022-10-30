@@ -3,28 +3,24 @@
 const buttons=document.querySelectorAll(".button");
 const displayScreen=document.getElementById("value-display");
 
-let currentOperand = "", previousOperand = "", operator = "", result, previousResult;
-let reset = false. fromScreen = false;
+let currentOperand = "", previousOperand = "", operator = "", result;
+let reset = false, equalSign = false;
 
 
 function asign() {
     if (result || result === 0) {
         previousOperand = JSON.parse(String(result));
         currentOperand = "";
-        previousResult = JSON.parse(result);
         result = undefined;
     }
     else if (!previousOperand) {
         previousOperand = JSON.parse(currentOperand);
         currentOperand = "";
-        console.log("prevOper: " + previousOperand)
     }
 }
 
 
 function compute() {
-
-
 
     if (!previousOperand && currentOperand.length > 0) {
         if (currentOperand.length === 1 && !currentOperand.includes("-")) {
@@ -38,7 +34,6 @@ function compute() {
         switch(operator) {
             case "minus" :
                 result = ( (parseFloat(previousOperand) *1000) - (parseFloat(currentOperand) *1000) ) /1000;
-                console.log(result)
                 asign();
             break;
 
@@ -59,11 +54,14 @@ function compute() {
             break;
         }
     }
+
+
 }
 
 
 
 function displayUpdate() {
+
     if (!previousOperand && !currentOperand || reset) {
         displayScreen.innerText = 0;
     }
@@ -82,9 +80,11 @@ buttons.forEach(function(currentButton) {
         const buttonValue = currentButton.innerText;
 
         function checkOperator(arg) {
+
+            equalSign = false;
+
             if (currentOperand.length > 0 || previousOperand) {
                 operator=arg;
-                console.log(operator)
                 compute();
             }
         }
@@ -115,29 +115,29 @@ buttons.forEach(function(currentButton) {
         }
         else {
 
-            // asign value from creen if function was selected without entering a value
-            if (!currentOperand && displayScreen.innerText != 0)  {
+            // asign value from screen if function was selected before entering a value
+            if (!currentOperand && displayScreen.innerText != 0 && equalSign)  {
                 currentOperand = parseFloat(displayScreen.innerText);
-                asign();
-                fromScreen = true;
+                asign();        
+
             }
 
             switch (buttonValue) {
                 case "+" :
-                    console.log("+")
                     checkOperator("plus");
                 break;
 
                 case "-" : 
-
+                    // if quealSign was used "minus" goes before negative sign
+                    if (equalSign) {
+                        checkOperator("minus");
+                    }
                     // does "-" mean a negative sign ATM
-                    console.log("operator: " + operator)
-                    if (!currentOperand.includes("-") && currentOperand.length === 0) {
+                    else if (!currentOperand.includes("-") && currentOperand.length === 0) {
                         currentOperand += "-";
                     }
                     else {
                         checkOperator("minus");
-                        //console.log(previousOperand)
                     }
                 break;
 
@@ -152,15 +152,15 @@ buttons.forEach(function(currentButton) {
         
                 case "=" :
                     compute();
-
+                    equalSign = true;
                     function equals() {
                         displayUpdate();
 
                         currentOperand = "", previousOperand = "", operator = "";
                         reset = false;
-                        
+                     
                     }
-                    console.log(result)
+        
                     equals();
                 return
 
@@ -187,3 +187,4 @@ buttons.forEach(function(currentButton) {
 
 
 
+console
