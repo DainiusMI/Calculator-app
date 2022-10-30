@@ -9,9 +9,10 @@ body {
     margin: 0;
 
     width: 100%;
-    height: auto;
+    height: 100vh;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
@@ -55,7 +56,6 @@ body {
         }
         .button-row {
             display:flex;
-            flex-direction: row;
             gap: var.$spacing;
         }
     }
@@ -86,4 +86,7 @@ body {
 }
 .longer {
     grid-column: span 2;
+}
+.to-roman {
+    width: 100%;
 }

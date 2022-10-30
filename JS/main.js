@@ -1,7 +1,8 @@
 
   
-const buttons=document.querySelectorAll(".button");
-const displayScreen=document.getElementById("value-display");
+const buttons = document.querySelectorAll(".button");
+const displayScreen = document.getElementById("value-display");
+const covertButton = document.getElementsByClassName("to-roman");
 
 let currentOperand = "", previousOperand = "", operator = "", result;
 let reset = false, equalSign = false;
@@ -97,7 +98,7 @@ buttons.forEach(function(currentButton) {
             }
         }
         // a none function button has been clicked
-        if (!currentButton.classList.contains("function")) {
+        if (!currentButton.classList.contains("function") && !currentButton.classList.contains("to-roman")) {
 
    
             if (previousOperand.length > 0) {
@@ -177,6 +178,10 @@ buttons.forEach(function(currentButton) {
                         }
                     }
                 break;
+
+                case "Conver to Roman" : 
+                    currentOperand = covertToRoman(displayScreen.innerText);
+                break
             }
 
         }
@@ -186,3 +191,32 @@ buttons.forEach(function(currentButton) {
 })
 
 
+function covertToRoman(num) {
+
+    let outcome = "";
+    const romanValues = {
+        M: 1000,
+        CM: 900,
+        D: 500,
+        CD: 400,
+        C: 100,
+        XC: 90,
+        L: 50,
+        XL: 40,
+        X: 10,
+        IX: 9,
+        V: 5,
+        IV: 4,
+        III: 3,
+        II: 2,
+        I: 1,
+    }
+
+    for (let key in romanValues) {
+        while (num >= romanValues[key]) {
+            num -= romanValues[key];
+            outcome += key;
+        }
+    }
+    return outcome;
+}
