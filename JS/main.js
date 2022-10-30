@@ -8,6 +8,7 @@ let reset = false, equalSign = false;
 
 
 function asign() {
+
     if (result || result === 0) {
         previousOperand = JSON.parse(String(result));
         currentOperand = "";
@@ -17,6 +18,26 @@ function asign() {
         previousOperand = JSON.parse(currentOperand);
         currentOperand = "";
     }
+}
+
+
+function resetValues() {
+
+    currentOperand = "", previousOperand = "", operator = "";
+    reset = true;
+}
+
+
+function displayUpdate() {
+
+    if (!previousOperand && !currentOperand || reset) {
+        displayScreen.innerText = 0;
+    }
+    else if (previousOperand !== "" && currentOperand.length === 0) {
+        displayScreen.innerText = previousOperand;
+    }
+    else
+        displayScreen.innerText = currentOperand;   
 }
 
 
@@ -41,7 +62,6 @@ function compute() {
                 result = ( (parseFloat(previousOperand) *1000) + (parseFloat(currentOperand) *1000) ) /1000;
                 asign();
             break;
-            break;
             
             case "multiply" :
                 result = parseFloat(previousOperand) * parseFloat(currentOperand);
@@ -54,30 +74,18 @@ function compute() {
             break;
         }
     }
-
-
 }
-
-
-
-function displayUpdate() {
-
-    if (!previousOperand && !currentOperand || reset) {
-        displayScreen.innerText = 0;
-    }
-    else if (previousOperand !== "" && currentOperand.length === 0) {
-        displayScreen.innerText = previousOperand;
-    }
-    else
-        displayScreen.innerText = currentOperand;   
-}
-
 
 
 buttons.forEach(function(currentButton) {
     currentButton.addEventListener("click", function() {
 
         const buttonValue = currentButton.innerText;
+
+        
+        if (currentButton.innerText != "RESET") {
+            reset = false;
+        }
 
         function checkOperator(arg) {
 
@@ -90,12 +98,9 @@ buttons.forEach(function(currentButton) {
         }
         // a none function button has been clicked
         if (!currentButton.classList.contains("function")) {
-            
-            if (reset) {
-                reset = false;
-            }
 
-            if (previousOperand.length >0) {
+   
+            if (previousOperand.length > 0) {
                 operator = "";
             }
             // was it the dot sign
@@ -114,7 +119,6 @@ buttons.forEach(function(currentButton) {
             }
         }
         else {
-
             // asign value from screen if function was selected before entering a value
             if (!currentOperand && displayScreen.innerText != 0 && equalSign)  {
                 currentOperand = parseFloat(displayScreen.innerText);
@@ -153,26 +157,22 @@ buttons.forEach(function(currentButton) {
                 case "=" :
                     compute();
                     equalSign = true;
-                    function equals() {
-                        displayUpdate();
 
-                        currentOperand = "", previousOperand = "", operator = "";
-                        reset = false;
-                     
-                    }
-        
-                    equals();
+                    displayUpdate();
+                    resetValues();
                 return
 
                 case "RESET" :
-                    currentOperand = "", previousOperand = "", operator = "", result = 0;
-                    reset = true;
+                    resetValues();
                 break;
 
                 case "DEL" :
+                    if (equalSign) {
+                        resetValues();
+                    }
                     if (currentOperand.length > 0) {
                         currentOperand = currentOperand.slice(0, currentOperand.length -1); 
-                        if (currentOperand.length ===0) {
+                        if (currentOperand.length === 0) {
                             reset = true;
                         }
                     }
@@ -186,5 +186,3 @@ buttons.forEach(function(currentButton) {
 })
 
 
-
-console
